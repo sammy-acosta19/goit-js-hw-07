@@ -4,12 +4,11 @@ const gallery = document.querySelector(".gallery");
 
 function renderGalleryItems() {
   const galleryHTML = galleryItems.map((item) => `
-  <li class="gallery__item">
-  <a class="gallery__link" href="${item.original}">
-  <img class="gallery__image" src="${item.preview}" alt="${item.description}" />
-  </a>
-</li>
-  
+    <li class="gallery__item">
+      <a class="gallery__link" href="${item.original}">
+        <img class="gallery__image" src="${item.preview}" alt="${item.description}" />
+      </a>
+    </li>
   `).join("");
 
   gallery.innerHTML = galleryHTML;
@@ -17,29 +16,18 @@ function renderGalleryItems() {
 
 renderGalleryItems();
 
-let activeLightbox = null;
-
 gallery.addEventListener("click", (e) => {
   e.preventDefault();
-  
+
   if (e.target.classList.contains("gallery__image")) {
-    const largeImageURL = e.target.dataset.source;
+    const largeImageURL = e.target.parentElement.getAttribute("href");
 
-    activeLightbox = basicLightbox.create(`
-      <img src="${largeImageURL}" alt="Image description">
-    `);
+    const lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionPosition: 'bottom',
+      captionDelay: 250
+    });
 
-    activeLightbox.show();
-
+    lightbox.open({ url: largeImageURL });
   }
 });
- 
- const Lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionPosition: 'bottom',
-  captionDelay: 250
-});
-
-
-
-
